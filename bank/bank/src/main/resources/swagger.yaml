@@ -1,0 +1,72 @@
+swagger: '2.0'
+info:
+  title: Cuenta Bancaria API
+  description: API para gestionar cuentas bancarias
+  version: 1.0
+servers:
+  - url: http://localhost:8080/api
+paths:
+  /api/cuentas:
+    post:
+      summary: Crear Cuenta Bancaria
+      description: Crea una nueva cuenta bancaria para un cliente.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CuentaBancariaRequest'
+      responses:
+        '201':
+          description: Cuenta creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CuentaBancaria'
+        '400':
+          description: Solicitud incorrecta
+        '404':
+          description: Cliente no encontrado
+      tags:
+        - Cuenta Bancaria
+components:
+  schemas:
+    CuentaBancariaRequest:
+      type: object
+      required:
+        - tipoCuenta
+        - saldo
+        - clienteId
+      properties:
+        tipoCuenta:
+          type: string
+          description: Tipo de cuenta (e.g., Ahorros, Corriente)
+        saldo:
+          type: number
+          description: Saldo inicial de la cuenta
+        clienteId:
+          type: integer
+          description: Identificador del cliente asociado
+    CuentaBancaria:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identificador unico de la cuenta
+        tipoCuenta:
+          type: string
+          description: Tipo de cuenta (e.g., Ahorros, Corriente)
+        saldo:
+          type: number
+          description: Saldo actual de la cuenta
+        fechaCreacion:
+          type: string
+          format: date-time
+          description: Fecha y hora de creacion de la cuenta
+        fechaUltimaActualizacion:
+          type: string
+          format: date-time
+          description: Fecha y hora de la ultima actualizacion
+        cliente:
+          type: object
+          description: Cliente asociado a la cuenta
