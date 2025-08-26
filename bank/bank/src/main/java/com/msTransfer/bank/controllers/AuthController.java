@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = {"http://localhost:8080", "http://127.0.0.1:8080", "null","http://192.168.0.6:8081"},
+methods = {org.springframework.web.bind.annotation.RequestMethod.POST,
+           org.springframework.web.bind.annotation.RequestMethod.OPTIONS},
+allowedHeaders = "*",
+allowCredentials = "true")
 public class AuthController {
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -23,6 +28,7 @@ public class AuthController {
 	@Autowired
 	JwtUtil jwtUtils;
 
+	// Get User for name
 	@PostMapping("/signin")
 	public String authenticateUser(@RequestBody User user) {
 
@@ -34,6 +40,7 @@ public class AuthController {
 		return jwtUtils.generateToken(userDetails.getUsername());
 	}
 
+	// Get User for name
 	@PostMapping("/signup")
 	public String registerUser(@RequestBody User user) {
 		if (userRepository.existsByUsername(user.getUsername())) {
